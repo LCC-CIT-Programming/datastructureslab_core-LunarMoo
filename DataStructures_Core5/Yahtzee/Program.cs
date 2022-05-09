@@ -1,9 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Yahtzee
 {
     class Program
     {
+        //The objective of the game is to score points by rolling
+        //five dice to make certain combinations. The dice can be
+        //rolled up to three times in a turn to try to make various
+        //scoring combinations and dice must remain in the box.
+        //A game consists of thirteen rounds. After each round the
+        //player chooses which scoring category is to be used for that
+        //round. Once a category has been used in the game, it cannot be
+        //used again. The scoring categories have varying point values,
+        //some of which are fixed values and others for which the score
+        //depends on the value of the dice. A Yahtzee is five-of-a-kind
+        //and scores 50 points, the highest of any category. The winner
+        //is the player who scores the most points.
+
+
         const int NONE = -1;
         const int ONES = 0;
         const int TWOS = 1;
@@ -25,7 +40,7 @@ namespace Yahtzee
         static void Main(string[] args)
         {
             /*
-             * declare variables for the user's scorecard and the computer's scorecard
+             * declare variables for the user's scorecard and the computer's scorecard Done
              * declare a variable for the number of turns the user has taken and another for the number of moves the computer has taken
              * declare a boolean that knows if it is the user's turn and set it to false
              * 
@@ -55,6 +70,23 @@ namespace Yahtzee
              *  
              *  display a message about who won
              */
+            int[] uScorecard = new int[TOTAL + 1];
+            int[] compScorecard = new int[TOTAL + 1];
+
+            int[] uRolls = new int[TOTAL];
+            int[] compRolls = new int[TOTAL];
+
+            //bool uTurn = false;
+
+
+
+            List<int> dice = new List<int>() { 1, 2, 3, 4, 6 };
+            int[] counts = GetCounts(dice);
+            foreach (int count in counts)
+                Console.WriteLine(count);
+            int score = Score(0, dice);
+            Console.WriteLine(score);
+
 
             Console.ReadLine();
         }
@@ -63,15 +95,16 @@ namespace Yahtzee
 
         // sets all of the items in a scorecard to -1 to start the game
         // takes a data structure for a scorecard and the corresponding score card count as parameters.  Both are altered by the method.
-        static void ResetScorecard(/* TODO */)
+        static void ResetScorecard(int[] scorecard)
         {
+          
         }
 
         // calculates the subtotal, bonus and the total for the scorecard
         // takes a data structure for a scorecard as it's parameter
-        static void UpdateScorecard(/* TODO */)
+        /*static void UpdateScorecard(int [] scorecard)
         {
-            /* you can uncomment this code once you declare the parameter
+            // you can uncomment this code once you declare the parameter
             scorecard[SUBTOTAL] = 0;
             scorecard[BONUS] = 0;
             for (int i = ONES; i <= SIXES; i++)
@@ -85,8 +118,8 @@ namespace Yahtzee
             for (int i = THREE_OF_A_KIND; i <= YAHTZEE; i++)
                 if (scorecard[i] != -1)
                     scorecard[TOTAL] += scorecard[i];
-            */
-        }
+            
+        }*/
 
         static string FormatCell(int value)
         {
@@ -132,12 +165,13 @@ namespace Yahtzee
         // takes an integer that represents the number of dice to roll and a data structure to hold the dice as it's parameters
         static void Roll(/* TODO */)
         {
+
         }
 
-        // takes a data structure that is a set of dice as it's parameter.  Call it dice.
-        static void DisplayDice(/* TODO */)
+        // takes a data structure that is a set of dice as it's parameter.  Call it dice. done
+        static void DisplayDice(int[] dice)
         {
-            /* you can uncomment this code when you have declared the parameter
+            //you can uncomment this code when you have declared the parameter
             string lineFormat = "|   {0}  |";
             string border = "*------*";
             string second = "|      |";
@@ -157,7 +191,7 @@ namespace Yahtzee
             foreach (int d in dice)
                 Console.Write(border);
             Console.WriteLine();
-            */
+
         }
         #endregion
 
@@ -165,12 +199,12 @@ namespace Yahtzee
 
         // figures out the highest possible score for the set of dice for the computer
         // takes the scorecard datastructure and the set of dice that the computer is keeping as it's parameters
-        static int GetComputerScorecardItem(/* TODO */)
+       /* static int GetComputerScorecardItem(List<int> keeping, int[] scorecard)
         {
             int indexOfMax = 0;
             int max = 0;
 
-            /* you can uncomment this code once you've identified the parameters for this method
+            // you can uncomment this code once you've identified the parameters for this method
             for (int i = ONES; i <= YAHTZEE; i++)
             {
                 if (scorecard[i] == -1)
@@ -183,18 +217,17 @@ namespace Yahtzee
                     }
                 }
             }
-            */
-
             return indexOfMax;
-        }
+        }*/
 
         // implements the computer's turn.  The computer only rolls once.
         // You can earn extra credit for making the computer play smarter
         // takes the computer's scorecard data structure and scorecard count as parameters.  Both are altered by the method.
-        static void ComputerPlay(/* TODO */)
+        static void ComputerPlay(int[] cScorecard)
         {
             /* you can uncomment this code once you declare the parameters
-            declare a data structure for the dice that the computer is keeping.  Call it keeping.
+            //declare a data structure for the dice that the computer is keeping.  Call it keeping.
+
             int itemIndex = -1;
 
             Roll(5, keeping);
@@ -206,7 +239,7 @@ namespace Yahtzee
             itemIndex = GetComputerScorecardItem(cScorecard, keeping);
             cScorecard[itemIndex] = Score(itemIndex, keeping);
             cScorecardCount++;
-            */
+        */
         }
         #endregion
 
@@ -271,7 +304,7 @@ namespace Yahtzee
         // counts how many of a specified value are in the set of dice
         // takes the value that you're counting and the data structure containing the set of dice as it's parameter
         // returns the count
-        static int Count(/* TODO */)
+        static int Count(int[] c)
         {
             int count = 0;
 
@@ -281,81 +314,136 @@ namespace Yahtzee
         // counts the number of ones, twos, ... sixes in the set of dice
         // takes a data structure for a set of dice as it's parameter
         // returns a data structure that contains the count for each dice value
-        static /* TODO */ void GetCounts(/* TODO */)
+        static int[] GetCounts(List<int> dice)
         {
+            int[] counts = { 0, 0, 0, 0, 0, 0 };
+            foreach (int d in dice)
+            {
+                counts[d - 1]++;
+            }
+            return counts;
         }
 
         // adds the value of all of the dice based on the counts
         // takes a data structure that represents all of the counts as a parameter
-        static int Sum(/* TODO */)
+        static int Sum(int[] counts)
         {
             int sum = 0;
-            /* you can uncomment this code once you have declared the parameter
+            //you can uncomment this code once you have declared the parameter
             for (int i = ONES; i <= SIXES; i++)
             {
                 int value = i + 1;
                 sum += (value * counts[i]);
             }
-            */
+
             return sum;
         }
 
         // determines if you have a specified count based on the counts
         // takes a data structure that represents all of the counts as a parameter
-        static bool HasCount(/* TODO */)
+        static bool HasCount(int howMany, int[] counts)
         {
-            /* you can uncomment this when you declare the parameter
+            //you can uncomment this when you declare the parameter
             foreach (int count in counts)
                 if (howMany == count)
                     return true;
-            */
+
             return false;
         }
 
         // chance is the sum of the dice
         // takes a data structure that represents all of the counts as a parameter
-        static int ScoreChance(/* TODO */)
+        static int ScoreChance(int[] counts)
         {
-            return 0;
+            return Sum(counts);
         }
 
         // calculates the score for ONES given the set of counts (from GetCounts)
         // takes a data structure that represents all of the counts as a parameter
-        static int ScoreOnes(/* TODO */)
+        static int ScoreOnes(int[] counts)
         {
             // you can comment out this line when you have declared the parameters
-            // return counts[ONES] * 1;
-            return 0;
+            return counts[ONES] * 1;
+
         }
 
-        // WRITE ALL OF THESE: ScoreTwos, ScoreThrees, ScoreFours, ScoreFives, ScoreSies
+        static int ScoreTwos(int[] counts)
+        {
+            // you can comment out this line when you have declared the parameters
+            return counts[TWOS] * 2;
+
+        }
+
+        static int ScoreThrees(int[] counts)
+        {
+            // you can comment out this line when you have declared the parameters
+            return counts[THREES] * 3;
+
+        }
+
+        static int ScoreFours(int[] counts)
+        {
+            // you can comment out this line when you have declared the parameters
+            return counts[FOURS] * 4;
+
+        }
+
+        static int ScoreFives(int[] counts)
+        {
+            // you can comment out this line when you have declared the parameters
+            return counts[FIVES] * 5;
+
+        }
+
+        static int ScoreSixes(int[] counts)
+        {
+            // you can comment out this line when you have declared the parameters
+            return counts[SIXES] * 6;
+
+        }
+        // WRITE ALL OF THESE: ScoreTwos done, ScoreThrees done, ScoreFours done, ScoreFives done, ScoreSixes done
 
         // scores 3 of a kind.  4 of a kind or 5 of a kind also can be used for 3 of a kind
         // the sum of the dice are used for the score
         // takes a data structure that represents all of the counts as a parameter
-        static int ScoreThreeOfAKind(/* TODO */)
+        static int ScoreThreeOfAKind(int[] counts)
         {
-            return 0;
+            if (HasCount(3, counts) || HasCount(4, counts) || HasCount(5, counts))
+                return Sum(counts);
+            else
+                return 0;
         }
-
+        static int ScoreFourOfAKind(int[] counts)
+        {
+            if (HasCount(4, counts) || HasCount(5, counts))
+                return Sum(counts);
+            else
+                return 0;
+        }
+        static int ScoreYahtzee(int[] counts)
+        {
+            if (HasCount(5, counts))
+                return 50;
+            else
+                return 0;
+        }
         // WRITE ALL OF THESE: ScoreFourOfAKind, ScoreYahtzee - a yahtzee is worth 50 points
 
         // takes a data structure that represents all of the counts as a parameter
-        static int ScoreFullHouse(/* TODO */)
+        static int ScoreFullHouse(int[] counts)
         {
-            /* you can uncomment this code once you declare the parameter
+            // you can uncomment this code once you declare the parameter
             if (HasCount(2, counts) && HasCount(3, counts))
                 return 25;
             else
-            */
-            return 0;
+                return 0;
 
         }
 
         // takes a data structure that represents all of the counts as a parameter
-        static int ScoreSmallStraight(/* TODO */)
+        static int ScoreSmallStraight(int[] counts)
         {
-            /* you can uncomment this code once you declare the parameter
+            // you can uncomment this code once you declare the parameter
             for (int i = THREES; i <= FOURS; i++)
             {
                 if (counts[i] == 0)
@@ -366,14 +454,14 @@ namespace Yahtzee
                 (counts[FIVES] >= 1 && counts[SIXES] >= 1))
                 return 30;
             else
-            */
-            return 0;
+
+                return 0;
         }
 
         // takes a data structure that represents all of the counts as a parameter
-        static int ScoreLargeStraight(/* TODO */)
+        static int ScoreLargeStraight(int[] counts)
         {
-            /* you can uncomment this code once you declare the parameter
+            // you can uncomment this code once you declare the parameter
             for (int i = TWOS; i <= FIVES; i++)
             {
                 if (counts[i] == 0)
@@ -382,15 +470,15 @@ namespace Yahtzee
             if (counts[ONES] == 1 || counts[SIXES] == 1)
                 return 40;
             else
-            */
-            return 0;
+
+                return 0;
         }
 
         // scores a score card item based on the set of dice
         // takes an integer which represent the scorecard item as well as a data structure representing a set of dice as parameters
-        static int Score(/* TODO */)
+        static int Score(int whichElement, List<int> dice)
         {
-            /* you can uncomment this code once you declare the parameter
+            // you can uncomment this code once you declare the parameter
             int[] counts = GetCounts(dice);
             switch (whichElement)
             {
@@ -423,8 +511,7 @@ namespace Yahtzee
                 default:
                     return 0;
             }
-            */
-            return 0;
+            //return 0;
         }
 
         #endregion
